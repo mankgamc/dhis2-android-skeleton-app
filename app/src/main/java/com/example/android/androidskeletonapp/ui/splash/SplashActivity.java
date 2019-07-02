@@ -1,10 +1,13 @@
 package com.example.android.androidskeletonapp.ui.splash;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.android.androidskeletonapp.R;
+import com.example.android.androidskeletonapp.data.Sdk;
 
 import org.hisp.dhis.android.core.D2;
+import org.hisp.dhis.android.core.d2manager.D2Manager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Single;
@@ -23,9 +26,19 @@ public class SplashActivity extends AppCompatActivity {
                 instantiateD2()
                 .doOnSuccess(d2 -> {
                     // TODO Toast success
-                    }
+
+                            Toast toast=Toast.makeText(this,"congifiguration successful",Toast.LENGTH_SHORT);
+                            toast.setMargin(50,50);
+                            toast.show();
+
+                        }
                 ).doOnError(throwable -> {
                     // TODO Toast error
+
+                    Toast toast=Toast.makeText(this,"",Toast.LENGTH_SHORT);
+                    toast.setMargin(50,50);
+                    toast.show();
+
                 })
                 .subscribe();
     }
@@ -40,6 +53,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private Single<D2> instantiateD2() {
         // TODO Instantiate d2
+
+                Single<D2> d2Single = D2Manager.setUp(Sdk.getD2Configuration(this))
+                .andThen(D2Manager.setServerUrl("http://android2.dhis2.org:8080/"))
+                .andThen(D2Manager.instantiateD2());
+
         return Single.never();
     }
 }
